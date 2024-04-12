@@ -2,13 +2,39 @@ import React, { useState } from 'react';
 import { IconButton } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import SignUpModal from './SignUpModal';
 import './Login.css';
 
 const Login = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
+
+
+    const openSignUpModal = () => {
+        setIsSignUpModalOpen(true);
+    };
+
+    const closeSignUpModal = () => {
+        setIsSignUpModalOpen(false);
+    };
 
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
+    };
+
+    const handleEmailChange = (e) => {
+        setEmail(e.target.value);
+    };
+
+    const handlePasswordChange = (e) => {
+        setPassword(e.target.value);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // You can perform login authentication here
     };
 
     return (
@@ -35,7 +61,7 @@ const Login = () => {
                     </svg>
                     <h1 className="loginTitle">Sign in to continue</h1>
                 </div>
-                <form className="loginForm">
+                <form className="loginForm" onSubmit={handleSubmit}>
                     <div className="loginFormField">
                         <label htmlFor="email" className="loginLabel">
                             Email
@@ -45,6 +71,8 @@ const Login = () => {
                             className="loginInput"
                             placeholder="m@example.com"
                             type="email"
+                            value={email}
+                            onChange={handleEmailChange}
                         />
                     </div>
                     <div className="loginFormField">
@@ -56,6 +84,8 @@ const Login = () => {
                                 id="password"
                                 className="loginInputP"
                                 type={showPassword ? 'text' : 'password'}
+                                value={password}
+                                onChange={handlePasswordChange}
                             />
                             <button
                                 className="passwordToggle"
@@ -92,9 +122,12 @@ const Login = () => {
                 </form>
                 <div className="loginLinks">
                     <a href="#" className="loginLink">Forgot password?</a>
-                    <a href="#" className="loginLink">Create account</a>
+                    <a href="#" className="loginLink" onClick={openSignUpModal}>Create account</a>
                 </div>
             </div>
+            <>
+            {isSignUpModalOpen && <SignUpModal closeModal={closeSignUpModal} />}
+            </>
         </div>
     );
 };

@@ -1,0 +1,82 @@
+/* Updated CSS for SignUpModal */
+.modal-1-modal {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 40px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.24);
+  }
+  
+  .modal-1-modal header {
+    background: linear-gradient(90deg, #773ecb, #9f63ff);
+    border-radius: 12px;
+    padding: 20px 40px;
+    box-shadow: 0 16px 30px rgba(0, 0, 0, 0.12);
+  }
+  
+  .modal-1-modal h2 {
+    font-size: 24px;
+    color: #ffffff;
+    margin-bottom: 10px;
+  }
+  
+  .modal-1-modal h3 {
+    opacity: 0.45;
+    font-weight: 400;
+    color: #ffffff;
+  }
+  
+  .modal-1-modal form {
+    display: grid;
+    gap: 16px;
+  }
+  
+  .modal-1-modal .textbox {
+    position: relative;
+    width: 100%;
+  }
+  
+  .modal-1-modal .textbox input {
+    width: calc(100% - 44px);
+    background-color: #ececec;
+    border-radius: 6px;
+    border: none;
+    height: 56px;
+    padding: 0 16px;
+    font-family: inherit;
+    font-size: 16px;
+  }
+  
+  .modal-1-modal .textbox span {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #96939c;
+  }
+  
+  .modal-1-modal button {
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    height: 56px;
+    font-family: inherit;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .modal-1-modal button:hover {
+    background-color: #333333;
+  }
+  
+  .modal-1-modal .cancel-button {
+    background-color: #e0e0e0;
+    color: #333333;
+    margin-right: 10px;
+  }
+  
+  .modal-1-modal .cancel-button:hover {
+    background-color: #cccccc;
+  }
+  

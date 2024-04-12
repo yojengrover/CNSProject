@@ -8,7 +8,7 @@ import TwoStepVerification from './Components/TwoStepVerfication';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-   <TwoStepVerification/>
+   <Login/>
   </React.StrictMode>
 );
 
