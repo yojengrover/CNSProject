@@ -1,0 +1,72 @@
+.dialog-box {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: linear-gradient(135deg, white, #f0f0f0);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 2rem;
+    max-width: 28rem;
+  }
+  
+  .main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .space-y-2 {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .text-center {
+    text-align: center;
+  }
+  
+  .code-input-container {
+    position: relative;
+    width: 100%;
+  }
+  
+  .code-input {
+    display: flex;
+    height: 3rem;
+    width: 100%;
+    border-radius: 0.5rem;
+    border: 1px solid #ccc;
+    background-color: var(--background);
+    font-size: 1rem;
+    text-align: center; /* Center placeholder text */
+    transition: border-color 0.3s ease;
+    font-variant-numeric: tabular-nums;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  }
+  
+  .code-input::placeholder {
+    text-align: center;
+    /* Center placeholder text */
+  }
+  
+  .code-input:focus {
+    border-color: rgb(0, 0, 0); /* Change border color when focused */
+  }
+
+  
+  .verify-button {
+    display: flex;
+    height: 3rem;
+    width: 100%;
+    margin-top: 1rem;
+    justify-content: center;
+    align-items: center;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: black;
+    color: #ffffff;
+    cursor: pointer;
+  }
+  
