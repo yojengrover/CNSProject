@@ -1,0 +1,19 @@
+<!-- 2fa_setup.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2FA Setup</title>
+</head>
+<body>
+    <h2>2FA Setup</h2>
+    <p>Scan the QR code with your authenticator app to set up 2FA:</p>
+    <img src="data:image/png;base64,{{ qr_code }}" alt="QR Code">
+    <form id="2faForm" method="POST" action="/login-2fa">
+        <label for="otpInput">Enter OTP:</label><br>
+        <input type="text" id="otpInput" name="otp" required><br><br>
+        <button type="submit">Setup 2FA</button>
+    </form>
+</body>
+</html>
