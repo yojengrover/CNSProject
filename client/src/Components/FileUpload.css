@@ -1,0 +1,132 @@
+/* FileUpload.css */
+
+/* Reset */
+.FileUpload * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* Container */
+  .FileUpload .container {
+    max-width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  /* Header */
+  .FileUpload header {
+    padding: 2.5rem 0;
+  }
+  
+  .FileUpload header h1 {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  
+  .FileUpload header p {
+    font-size: 1rem;
+    color: #7d7d7d;
+    padding-bottom: 1.5em;
+  }
+  
+  /* Upload Button */
+  .FileUpload .upload-button {
+    display: inline-block;
+    height: 2.5rem;
+    padding: 0.5rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 0.375rem;
+    background-color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+    text-decoration: none;
+    color: #000;
+    transition: background-color 0.3s, color 0.3s;
+    cursor: pointer;
+  }
+  
+  .FileUpload .upload-button:hover {
+    background-color: #f0f0f0;
+    color: #000;
+  }
+  
+  /* Tabs */
+  .FileUpload .tabs {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .FileUpload .tab {
+    padding: 0.75rem 1.5rem;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+  }
+  
+  .FileUpload .tab:last-child {
+    border-right: 1px solid #ccc;
+  }
+  
+  .FileUpload .tab.active {
+    background-color: #fff;
+  }
+  
+  /* Tab Content */
+  .FileUpload .tab-content {
+    padding: 6rem;
+    border: 1px solid #ccc;
+    border-top: none;
+    border-bottom: #ccc;
+    display: flex;
+    justify-content: center;
+  }
+  
+  /* Table */
+  .FileUpload table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .FileUpload .tableHeading {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   padding: 2em;
+  }
+  
+  .FileUpload th, .FileUpload td {
+    padding: 1rem;
+    border-bottom: 1px solid #ccc;
+    text-align: left;
+  }
+  
+  .FileUpload th {
+    font-weight: bold;
+  }
+  
+  /* Footer */
+  .FileUpload footer {
+    border-top: 1px solid #ccc;
+    padding: 2.5rem 0;
+  }
+  
+  .FileUpload .footer-nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .FileUpload .footer-link {
+    margin-right: 1rem;
+    font-size: 0.875rem;
+    text-decoration: none;
+    color: #7d7d7d;
+    transition: color 0.3s;
+  }
+  
+  .FileUpload .footer-link:hover {
+    color: #000;
+  }
+  
