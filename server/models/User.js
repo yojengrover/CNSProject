@@ -1,22 +1,17 @@
 const mongoose = require('mongoose');
 const scheduleSchema = new mongoose.Schema({
-    _id: mongoose.Schema.Types.ObjectId,
-    email: {
+    name: {
         type: String,
         required: true
-    },
-    password: {
+      },
+      email: {
         type: String,
         required: true
-    },
-    type: {
+      },
+      password: {
         type: String,
         required: true
-    },
-    filearray: {
-        type: [String], // Assuming filearray contains file paths
-        default: []
-    }
+      },
 });
   
  

@@ -8,7 +8,7 @@ const cors = require('cors')
 app.use(cors());
 app.use(express.json());
 
-
+const uri = "mongodb+srv://yoji:yoji123@one.htfvy.mongodb.net/CNS?retryWrites=true&w=majority";
 
 async function connect() {
     try {
