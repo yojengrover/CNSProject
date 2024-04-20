@@ -5,6 +5,22 @@ const router = express.Router();
 router.get('/',auth, async (req,res) => {
     try{
      const user = await User.findById(req.user.id).select('-password');
+     ///  - logic
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     //// - logic
      res.json(user);   
  }
     catch (err){
