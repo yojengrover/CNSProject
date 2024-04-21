@@ -4,6 +4,11 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const { check, validationResult } = require('express-validator');
+const sha256 = require('./sha256');
+
+function hashPassword(password) {
+    return sha256(password);
+}
 
 const User = require('../../models/User');
 
@@ -37,15 +42,10 @@ router.post('/', [
 
         // Hash the password
         
-
-
-
-
-
-
-
-
+        // user.password = await bcrypt.hash(password, salt);
         
+        const salt = bcrypt.genSalt(10);
+        user.password = hashPassword(salt, password);
 
         // Save the user to the database
         await user.save();
