@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { IconButton } from '@mui/material';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import SignUpModal from './SignUpModal';
+import { Navigate } from 'react-router-dom';
+import axios from 'axios';
 import './Login.css';
 
 const Login = () => {
@@ -32,10 +33,32 @@ const Login = () => {
         setPassword(e.target.value);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // You can perform login authentication here
-    };
+        try {
+          // Send email and password to your server
+          const response = await axios.post('http://localhost:8000/login', {
+            email: email,
+            password: password
+          });
+
+          console.log(email, password);
+          console.log(response);
+          // Assuming your server responds with a JSON object containing a 'userExists' property
+          const { msg } = response.data;
+      
+          if (msg) {
+            return <Navigate to="/verify" />;
+          } else {
+            // User doesn't exist or password is wrong, display error message
+            console.log('User does not exist or password is wrong');
+          }
+        } catch (error) {
+          console.error('Error logging in:', error);
+        }
+      };
+    
+
 
     return (
         <div className="loginContainer">
@@ -131,5 +154,6 @@ const Login = () => {
         </div>
     );
 };
+
 
 export default Login;
