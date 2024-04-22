@@ -16,18 +16,16 @@ connectDB();
 
 app.use('/signup', require('./routes/SignUp'));
 app.post('/login', async (req, res) => {
-
-  // form_password 21c516ad487b79c172754d844da7a66e45bde30a1eb725f93ff9ec6247d7adb9
-  // test@12345
   try{
     const { email, password } = req.body;
-   const db_password_hash = await User.findOne({email}).select('-password');
+   const dbPass = await User.findOne({email});
+   const db_password_hash = dbPass.password;
 
    const form_password = password;
    form_password_hash = sha256(form_password);
 
    if (form_password_hash.length !== db_password_hash.length) {
-      return "Password not match";
+      console.log("Password not match");
    }
    let match = true;
    for (let i = 0; i < form_password_hash.length; i++) {
@@ -40,7 +38,7 @@ app.post('/login', async (req, res) => {
    console.log("Password match");
        
    } else {
-      return "Password not match";
+     console.log("Password not match");
    }
 
 

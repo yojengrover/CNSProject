@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import SignUpModal from './SignUpModal';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom"
 import axios from 'axios';
 import './Login.css';
 
@@ -11,7 +11,7 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
-
+    const navigate = useNavigate()
 
     const openSignUpModal = () => {
         setIsSignUpModalOpen(true);
@@ -48,7 +48,7 @@ const Login = () => {
           const { msg } = response.data;
       
           if (msg) {
-            return <Navigate to="/verify" />;
+            return navigate("/verify");
           } else {
             // User doesn't exist or password is wrong, display error message
             console.log('User does not exist or password is wrong');
