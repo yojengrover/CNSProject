@@ -1,9 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"
-
-
- 
+import { useNavigate } from "react-router-dom";
 import "./SignUpModal.css";
 
 const SignUpModal = ({ closeModal }) => {
@@ -14,7 +11,18 @@ const SignUpModal = ({ closeModal }) => {
     const [passwordsMatch, setPasswordsMatch] = useState(true);
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
-    const navigate = useNavigate()
+    const [successMessage, setSuccessMessage] = useState(false);
+    const navigate = useNavigate();
+
+    const SuccessModal = ({ message }) => {
+        return (
+          <div className="modal-overlay">
+            <div className="modal">
+              <p>Sign up successful! Redirecting...</p>
+            </div>
+          </div>
+        );
+      };
 
     const validateEmail = (email) => {
         // Email validation regex
@@ -58,10 +66,11 @@ const SignUpModal = ({ closeModal }) => {
             const { msg } = response.data;
             console.log(response.data);
             if (msg) {
-                
                 console.log('Authentication successful, navigating to FileUpload.jsx');
-                
-                return navigate("/file-upload")
+                setSuccessMessage(true);
+                setTimeout(() => {
+                    closeModal(); // Close modal after redirecting
+                }, 3000); // Redirect after 3 seconds
             } else {
                 // Authentication failed, display error message
                 console.log('Authentication failed: email does not exist or password is wrong');
@@ -77,6 +86,7 @@ const SignUpModal = ({ closeModal }) => {
 
     return (
         <div className={`modal-1-overlay open`}>
+            {successMessage ? <SuccessModal/>:(
             <div className="modal-1-modal">
                 <header>
                     <h2>Sign Up</h2>
@@ -124,7 +134,8 @@ const SignUpModal = ({ closeModal }) => {
                         Cancel
                     </button>
                 </form>
-            </div>
+                
+            </div>)}
         </div>
     );
 };

@@ -1,20 +1,60 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import './FileUpload.css';
 
 const FileUpload = () => {
   const [activeTab, setActiveTab] = useState('personal');
+  const [userName, setUserName] = useState('');
+  const [fileData, setFileData] = useState([]);
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (location.state && location.state.name) {
+      setUserName(location.state.name);
+    }
+  }, [location]);
 
   const handleTabChange = (tab) => {
     setActiveTab(tab);
   };
 
+  const handleLogout = () => {
+    // Redirect to the login page
+    return navigate('/');
+  };
+
+  const handleFileUpload = (event) => {
+    const fileList = event.target.files;
+    // Convert the FileList to an array and add it to fileData state
+    const newFiles = Array.from(fileList).map(file => ({
+      name: file.name,
+      uploadedBy: userName,
+      date: new Date().toISOString().split('T')[0] // Get the current date in YYYY-MM-DD format
+    }));
+    setFileData([...fileData, ...newFiles]);
+  };
+
   return (
     <div className="FileUpload">
       <header>
-        <div className="container text-center">
-          <h1>File Upload</h1>
-          <p>Securely upload and share your files. Fast. Easy. Reliable.</p>
-          <button className="upload-button">Upload Files</button>
+        <div className='container'>
+          <div className='header-content'>
+            <div className='user-info'>
+              <div className='userName'><div className='welocome'>Hi, </div> {userName}</div>
+              {/* Dropdown menu for user options */}
+              <div className="dropdown">
+                  <a className='logOut' onClick={handleLogout}>Log out</a>
+                
+              </div>
+            </div>
+            <div className="text-center">
+              <h1>File Upload</h1>
+              <p>Securely upload and share your files. Fast. Easy. Reliable.</p>
+              {/* File input element for uploading files */}
+              <input type="file" className="upload-button" onChange={handleFileUpload} multiple />
+            </div>
+          </div>
         </div>
       </header>
       <div className="container">
@@ -29,21 +69,17 @@ const FileUpload = () => {
               <thead>
                 <tr>
                   <th>File Name</th>
-                  <th>Uploaded By</th>
                   <th>Date</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Document.pdf</td>
-                  <td>John Doe</td>
-                  <td>2024-04-15</td>
-                </tr>
-                <tr>
-                  <td>Image.jpg</td>
-                  <td>Jane Smith</td>
-                  <td>2024-04-14</td>
-                </tr>
+                {/* Map over fileData to display uploaded files */}
+                {fileData.map((file, index) => (
+                  <tr key={index}>
+                    <td>{file.name}</td>
+                    <td>{file.date}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           )}
@@ -57,16 +93,13 @@ const FileUpload = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Presentation.pptx</td>
-                  <td>Alice Johnson</td>
-                  <td>2024-04-13</td>
-                </tr>
-                <tr>
-                  <td>Spreadsheet.xlsx</td>
-                  <td>Bob Williams</td>
-                  <td>2024-04-12</td>
-                </tr>
+              {fileData.map((file, index) => (
+                  <tr key={index}>
+                    <td>{file.name}</td>
+                    <td>{file.uploadedBy}</td>
+                    <td>{file.date}</td>
+                  </tr>
+                ))}
               </tbody>
             </table>
           )}

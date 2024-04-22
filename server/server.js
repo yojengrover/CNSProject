@@ -34,7 +34,7 @@ app.post('/login', async (req, res) => {
       }
    }
    if (match) {
-      res.json({msg: "Match"});  
+      res.json({msg: "Match", name: dbPass.name});  
    console.log("Password match");
        
    } else {

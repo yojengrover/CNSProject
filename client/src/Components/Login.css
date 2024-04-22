@@ -62,7 +62,10 @@
 .passwordInput {
     position: relative;
 }
-
+.error-message {
+    color: #c02121;
+    text-align: center; /* Center error message */
+  }
 
 
 .passwordToggle {

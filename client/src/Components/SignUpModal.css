@@ -9,6 +9,32 @@
     z-index: 1; /* Ensure the background is behind the modal */
 }
 
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal {
+  background-color: #dff0d8; /* Green background color */
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.modal p {
+  margin: 0;
+  font-size: 2rem;
+  color: #155724; /* Dark green text color */
+  text-align: center;
+}
+
 .modal-1-modal {
     position: fixed;
     top: 50%;
@@ -92,3 +118,7 @@
     background-color: #cccccc;
   }
   
+  .error-message {
+    color: #c02121;
+    text-align: center; /* Center error message */
+  }

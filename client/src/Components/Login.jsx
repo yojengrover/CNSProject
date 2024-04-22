@@ -11,7 +11,8 @@ const Login = () => {
     const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
     const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false);
-    const navigate = useNavigate()
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
 
     const openSignUpModal = () => {
         setIsSignUpModalOpen(true);
@@ -36,29 +37,26 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-          // Send email and password to your server
-          const response = await axios.post('http://localhost:8000/login', {
-            email: email,
-            password: password
-          });
+            // Send email and password to your server
+            const response = await axios.post('http://localhost:8000/login', {
+                email: email,
+                password: password
+            });
 
-          console.log(email, password);
-          console.log(response);
-          // Assuming your server responds with a JSON object containing a 'userExists' property
-          const { msg } = response.data;
-      
-          if (msg) {
-            return navigate("/verify");
-          } else {
-            // User doesn't exist or password is wrong, display error message
-            console.log('User does not exist or password is wrong');
-          }
+            // Assuming your server responds with a JSON object containing a 'userExists' property
+            const { msg, name } = response.data;
+
+            if (msg) {
+                console.log(response);
+                return navigate("/verify", { state: { name: name } });
+            } else {
+                // User doesn't exist or password is wrong, display error message
+                setError('User does not exist or password is wrong');
+            }
         } catch (error) {
-          console.error('Error logging in:', error);
+            console.error('Error logging in:', error);
         }
-      };
-    
-
+    };
 
     return (
         <div className="loginContainer">
@@ -139,6 +137,7 @@ const Login = () => {
                             </button>
                         </div>
                     </div>
+                    {error && <p className="errorMessage">{error}</p>}
                     <button className="loginButton" type="submit">
                         Sign In
                     </button>
@@ -148,12 +147,9 @@ const Login = () => {
                     <a href="#" className="loginLink" onClick={openSignUpModal}>Create account</a>
                 </div>
             </div>
-            <>
             {isSignUpModalOpen && <SignUpModal closeModal={closeSignUpModal} />}
-            </>
         </div>
     );
 };
-
 
 export default Login;
