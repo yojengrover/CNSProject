@@ -5,10 +5,13 @@ const bcrypt = require('bcrypt');
 const { RateLimiterMemory } = require('rate-limiter-flexible');
 const pyotp = require('pyotp');
 const qrcode = require('qrcode');
+const fs = require('fs');
 
 const app = express();
 app.use(bodyParser.json());
 
+const PRIVATE_KEY_PATH = './private_key.pem';
+const PUBLIC_KEY_PATH = './public_key.pem';
 const SECRET_KEY = 'your_secret_key';
 const users = {
     'user1': {
@@ -31,12 +34,23 @@ const rateLimiter = new RateLimiterMemory({
     duration: 1,
 });
 
+// Middleware for rate limiting
+const rateLimitMiddleware = (req, res, next) => {
+    rateLimiter.consume(req.ip)
+        .then(() => {
+            next();
+        })
+        .catch(() => {
+            res.status(429).json({ message: 'Too many requests. Please try again later.' });
+        });
+};
+
 // Middleware to check JWT token
 const tokenMiddleware = (req, res, next) => {
     const token = req.headers.authorization;
     if (!token) return res.status(401).json({ message: 'Token is missing' });
 
-    jwt.verify(token.split(" ")[1], SECRET_KEY, (err, decoded) => {
+    jwt.verify(token.split(" ")[1], fs.readFileSync(PUBLIC_KEY_PATH), { algorithms: ['RS256'] }, (err, decoded) => {
         if (err) return res.status(401).json({ message: 'Token is invalid' });
         req.username = decoded.username;
         next();
@@ -45,7 +59,7 @@ const tokenMiddleware = (req, res, next) => {
 
 // Function to generate JWT token
 function generateToken(username) {
-    return jwt.sign({ username }, SECRET_KEY, { expiresIn: '1h' });
+    return jwt.sign({ username }, fs.readFileSync(PRIVATE_KEY_PATH), { algorithm: 'RS256' });
 }
 
 // Route to render login form
@@ -59,7 +73,7 @@ app.get('/register', (req, res) => {
 });
 
 // Route for user registration
-app.post('/register', async (req, res) => {
+app.post('/register', rateLimitMiddleware, async (req, res) => {
     const { username, password } = req.body;
 
     if (username in users) {
@@ -72,7 +86,7 @@ app.post('/register', async (req, res) => {
 });
 
 // Route for user login
-app.post('/login', async (req, res) => {
+app.post('/login', rateLimitMiddleware, async (req, res) => {
     const { username, password } = req.body;
 
     if (!(username in users)) {
