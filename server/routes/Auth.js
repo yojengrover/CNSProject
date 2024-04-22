@@ -8,9 +8,8 @@ router.get('/',auth, async (req,res) => {
      const db_password_hash = await User.findById(req.user.id).select('-password');
      ///  - logic
      // form_password is the password submitted in the form
-     const salt = bcrypt.genSalt(10);
      const form_password_hash = req.user.password
-     form_password_hash = hashPassword(salt, form_password);
+     form_password_hash = sha256(form_password);
 
      if (form_password_hash.length !== db_password_hash.length) {
         return "Password not match";

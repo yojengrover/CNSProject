@@ -18,13 +18,13 @@ app.use('/signup', require('./routes/SignUp'));
 app.post('/login', async (req, res) => {
 
   // form_password 21c516ad487b79c172754d844da7a66e45bde30a1eb725f93ff9ec6247d7adb9
+  // test@12345
   try{
     const { email, password } = req.body;
    const db_password_hash = await User.findOne({email}).select('-password');
 
-   const salt = bcrypt.genSalt(10);
    const form_password = password;
-   form_password_hash = sha256(salt, form_password);
+   form_password_hash = sha256(form_password);
 
    if (form_password_hash.length !== db_password_hash.length) {
       return "Password not match";

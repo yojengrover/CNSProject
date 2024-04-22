@@ -1,12 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const bcrypt = require('bcryptjs');
 const { check, validationResult } = require('express-validator');
 const sha256 = require('./sha256');
-
-function hashPassword(password) {
-    return sha256(password);
-}
 
 const User = require('../models/User');
 
@@ -42,8 +37,7 @@ router.post('/', [
         
         // user.password = await bcrypt.hash(password, salt);
         
-        const salt = bcrypt.genSalt(10);
-        user.password = hashPassword(salt, password);
+        user.password = sha256(password);
         await user.save();
         res.json({ msg: 'User registered successfully' });
     } catch (err) {
