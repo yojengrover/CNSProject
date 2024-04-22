@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const config = require('config');
 const { check, validationResult } = require('express-validator');
 const sha256 = require('./sha256');
 
@@ -10,7 +8,7 @@ function hashPassword(password) {
     return sha256(password);
 }
 
-const User = require('../../models/User');
+const User = require('../models/User');
 
 // POST route to register a new user
 router.post('/', [
@@ -46,15 +44,7 @@ router.post('/', [
         
         const salt = bcrypt.genSalt(10);
         user.password = hashPassword(salt, password);
-
-        // Save the user to the database
         await user.save();
-
-        // Custom code: Add your custom logic here
-        
-        // Custom code: End of custom logic
-
-        // Return a success response
         res.json({ msg: 'User registered successfully' });
     } catch (err) {
         console.error(err.message);

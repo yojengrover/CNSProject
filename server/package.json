@@ -5,15 +5,18 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev":"nodemon server",
+    "dev": "nodemon server",
     "start": "node server",
-    "build":"npm install"
+    "build": "npm install"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "config": "^3.3.11",
     "cors": "^2.8.5",
     "express": "^4.19.2",
+    "express-validator": "^7.0.1",
     "mongoose": "^8.3.1",
     "nodemon": "^3.1.0"
   }

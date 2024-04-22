@@ -1,29 +1,41 @@
-/* Updated CSS for SignUpModal */
+.modal-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+    backdrop-filter: blur(8px); /* Apply a blur effect */
+    z-index: 1; /* Ensure the background is behind the modal */
+}
+
 .modal-1-modal {
-    background-color: #ffffff;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #ffffff;
     border-radius: 12px;
-    padding: 40px;
+  
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.24);
-  }
-  
-  .modal-1-modal header {
-    background: linear-gradient(90deg, #773ecb, #9f63ff);
-    border-radius: 12px;
-    padding: 20px 40px;
-    box-shadow: 0 16px 30px rgba(0, 0, 0, 0.12);
-  }
-  
+    z-index: 2;
+    max-width: 50rem;
+    width: 48rem;
+    height: 39rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;/* Ensure the modal is above the blurred background */
+}
+
   .modal-1-modal h2 {
+    display: flex;
     font-size: 24px;
-    color: #ffffff;
     margin-bottom: 10px;
+    justify-content: center;
   }
   
-  .modal-1-modal h3 {
-    opacity: 0.45;
-    font-weight: 400;
-    color: #ffffff;
-  }
+  
   
   .modal-1-modal form {
     display: grid;
@@ -36,14 +48,14 @@
   }
   
   .modal-1-modal .textbox input {
-    width: calc(100% - 44px);
     background-color: #ececec;
     border-radius: 6px;
     border: none;
-    height: 56px;
+    height: 60px;
+    width: 25rem;
     padding: 0 16px;
     font-family: inherit;
-    font-size: 16px;
+    font-size: 19px;
   }
   
   .modal-1-modal .textbox span {
@@ -73,7 +85,7 @@
   .modal-1-modal .cancel-button {
     background-color: #e0e0e0;
     color: #333333;
-    margin-right: 10px;
+    
   }
   
   .modal-1-modal .cancel-button:hover {
