@@ -59,6 +59,11 @@
     width: -webkit-fill-available;
 }
 
+.errorMessage{
+    color: #c02121;
+    text-align: center; 
+}
+
 .passwordInput {
     position: relative;
 }

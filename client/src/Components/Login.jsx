@@ -54,6 +54,7 @@ const Login = () => {
                 setError('User does not exist or password is wrong');
             }
         } catch (error) {
+            setError('User does not exist or password is wrong')
             console.error('Error logging in:', error);
         }
     };

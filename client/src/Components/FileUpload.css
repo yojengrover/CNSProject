@@ -126,3 +126,7 @@
 .FileUpload th {
   font-weight: bold;
 }
+
+.FileUpload .download-icon{
+  cursor: pointer;
+}

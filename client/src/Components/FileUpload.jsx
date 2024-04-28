@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { FaDownload } from 'react-icons/fa'; // Import the download icon
 import './FileUpload.css';
 
 const FileUpload = () => {
-  const [activeTab, setActiveTab] = useState('personal');
+  const [activeTab, setActiveTab] = useState('public');
   const [userName, setUserName] = useState('');
   const [fileData, setFileData] = useState([]);
   const location = useLocation();
@@ -45,7 +46,6 @@ const FileUpload = () => {
               {/* Dropdown menu for user options */}
               <div className="dropdown">
                   <a className='logOut' onClick={handleLogout}>Log out</a>
-                
               </div>
             </div>
             <div className="text-center">
@@ -70,6 +70,7 @@ const FileUpload = () => {
                 <tr>
                   <th>File Name</th>
                   <th>Date</th>
+                  <th>Action</th> {/* Add a new header for the download icon */}
                 </tr>
               </thead>
               <tbody>
@@ -78,6 +79,7 @@ const FileUpload = () => {
                   <tr key={index}>
                     <td>{file.name}</td>
                     <td>{file.date}</td>
+                    <td><FaDownload className="download-icon" /></td> {/* Add download icon */}
                   </tr>
                 ))}
               </tbody>
@@ -90,6 +92,7 @@ const FileUpload = () => {
                   <th>File Name</th>
                   <th>Uploaded By</th>
                   <th>Date</th>
+                
                 </tr>
               </thead>
               <tbody>
