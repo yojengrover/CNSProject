@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from "axios";
 import { useNavigate, useLocation } from 'react-router-dom';
 import './TwoStepVerification.css';
 
@@ -13,28 +14,43 @@ const SuccessModal = ({ message }) => {
 };
 
 const TwoStepVerification = () => {
-  const [verificationCode, setVerificationCode] = useState('');
+  const [userVerificationCode, setVerificationCode] = useState('');
+  
   const [error, setError] = useState('');
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-
+  
   const handleChange = (e) => {
     setVerificationCode(e.target.value);
     setError(''); // Clear any previous error when input value changes
   };
-
-  const handleVerify = () => {
-    if (verificationCode === '1234') {
-      setError('Invalid verification code'); // Set error message if code is '1234'
-    } else {
+  
+  const handleVerify = async(e) => {
+    e.preventDefault();
+    try {
+      // Send name, email, and password to your server for authentication
+      const response = await axios.post('http://localhost:8000/otp', {
+        otp:userVerificationCode
+      });
+      // Assuming your server responds with a JSON object containing a 'success' property
+      const { msg } = response.data;
+      console.log(response.data);
+      if (msg) {
+          console.log('Authentication successful, navigating to FileUpload.jsx');
       setShowSuccessModal(true);
       setTimeout(() => {
         navigate('/file-upload', { state: { name: location.state.name } });
-      }, 10000); // Redirect after 3 seconds
+      }, 500); // Redirect after 500ms
+    } else {
+      setError('Invalid verification code'); 
     }
-  };
+  }
+  catch (err){
+    console.error(err.message);
+}
 
+    }
   return (
     <div className="dialog-box">
       {showSuccessModal ? <SuccessModal message="Verification successful! Redirecting..." /> : (
@@ -48,7 +64,7 @@ const TwoStepVerification = () => {
             className="code-input"
             id="code"
             placeholder="Enter your code"
-            value={verificationCode}
+            value={userVerificationCode}
             onChange={handleChange}
           />
           {error && <p className="error-message">{error}</p>}
@@ -61,5 +77,4 @@ const TwoStepVerification = () => {
     </div>
   );
 };
-
 export default TwoStepVerification;
