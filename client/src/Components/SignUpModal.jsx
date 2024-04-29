@@ -70,7 +70,7 @@ const SignUpModal = ({ closeModal }) => {
                 setSuccessMessage(true);
                 setTimeout(() => {
                     closeModal(); // Close modal after redirecting
-                }, 10000); // Redirect after 3 seconds
+                }, 500); // Redirect after 500ms
             } else {
                 // Authentication failed, display error message
                 console.log('Authentication failed: email does not exist or password is wrong');
