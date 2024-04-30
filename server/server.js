@@ -26,6 +26,7 @@ const transporter = nodemailer.createTransport({
 let trueOTP = ""
 
 app.use('/signup', require('./routes/SignUp'));
+app.use('/encrypt', require('./routes/encrypt'));
 app.post('/login', async (req, res) => {
   try{
     const { email, password } = req.body;
@@ -100,6 +101,49 @@ app.post('/otp', async (req, res) => {
   catch (err){
       console.error(err.message);
       res.status(500).send('Server Error');
+  }
+});
+
+
+app.post('/decrypt', async (req, res) => {
+  const { email } = req.body;
+  console.log(email);
+  try {
+    // Find the user by email
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ msg: 'User not found' });
+    }
+
+    // Decrypt each file associated with the user
+    const decryptedFiles = [];
+    for (const fileObj of user.files) {
+      const encryptedFilePath = fileObj.file;
+      const encryptedKeyPath = fileObj.key;
+
+      // Read the encrypted file data
+      const encryptedFileData = fs.readFileSync(encryptedFilePath);
+
+      // Read the encrypted symmetric key
+      const encryptedSymmetricKey = fs.readFileSync(encryptedKeyPath);
+
+      // Decrypt the symmetric key with the user's private key
+      const symmetricKey = crypto.privateDecrypt(privateKey, encryptedSymmetricKey);
+
+      // Decrypt the file data using the symmetric key
+      const decryptedFileData = decryptWithSymmetricKey(encryptedFileData.toString(), symmetricKey);
+
+      // Push decrypted file data to the result array
+      decryptedFiles.push({
+        fileName: encryptedFilePath,
+        data: decryptedFileData
+      });
+    }
+
+    res.json(decryptedFiles);
+  } catch (err) {
+    console.error('Error decrypting files:', err);
+    res.status(500).json({ msg: 'Server Error' });
   }
 });
 

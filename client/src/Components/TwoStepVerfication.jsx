@@ -40,7 +40,7 @@ const TwoStepVerification = () => {
           console.log('Authentication successful, navigating to FileUpload.jsx');
       setShowSuccessModal(true);
       setTimeout(() => {
-        navigate('/file-upload', { state: { name: location.state.name } });
+        navigate('/file-upload', { state: { name: location.state.name, email: location.state.email} });
       }, 500); // Redirect after 500ms
     } else {
       setError('Invalid verification code'); 

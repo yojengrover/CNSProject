@@ -48,7 +48,7 @@ const Login = () => {
 
             if (msg) {
                 console.log(response);
-                return navigate("/verify", { state: { name: name } });
+                return navigate("/verify", { state: { name: name, email: email } });
             } else {
                 // User doesn't exist or password is wrong, display error message
                 setError('User does not exist or password is wrong');
