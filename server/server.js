@@ -5,6 +5,8 @@ require('dotenv').config();
 const sha256 = require('./routes/sha256');
 const nodemailer = require('nodemailer');
 const app = express();
+const aes256 = require('aes256');
+const fs = require('fs');
 const PORT = 8000;
 const cors = require('cors')
 app.use(cors());
@@ -105,40 +107,43 @@ app.post('/otp', async (req, res) => {
 });
 
 
-app.post('/decrypt', async (req, res) => {
+app.post('/dec', async (req, res) => {
   const { email } = req.body;
-  console.log(email);
+  
   try {
     // Find the user by email
     const user = await User.findOne({ email });
+    console.log( email);
     if (!user) {
       return res.status(404).json({ msg: 'User not found' });
     }
 
     // Decrypt each file associated with the user
     const decryptedFiles = [];
-    for (const fileObj of user.files) {
-      const encryptedFilePath = fileObj.file;
-      const encryptedKeyPath = fileObj.key;
+for (const fileObj of user.files) {
+  if (!fileObj.file || !fileObj.key) {
+    console.error('Missing file or key path:', fileObj);
+    continue; // Skip this file and proceed to the next one
+  }
 
-      // Read the encrypted file data
-      const encryptedFileData = fs.readFileSync(encryptedFilePath);
+  const encryptedFilePath = fileObj.file;
+  const encryptedKeyPath = fileObj.key;
 
-      // Read the encrypted symmetric key
-      const encryptedSymmetricKey = fs.readFileSync(encryptedKeyPath);
+  // Read the encrypted file data
+  const encryptedFileData = fs.readFileSync(encryptedFilePath);
 
-      // Decrypt the symmetric key with the user's private key
-      const symmetricKey = crypto.privateDecrypt(privateKey, encryptedSymmetricKey);
+  // Read the encrypted symmetric key
+  const symmetricKey = fs.readFileSync(encryptedKeyPath);
 
-      // Decrypt the file data using the symmetric key
-      const decryptedFileData = decryptWithSymmetricKey(encryptedFileData.toString(), symmetricKey);
+  // Decrypt the file data using the symmetric key
+  const decryptedFileData = aes256.decrypt(symmetricKey.toString(), encryptedFileData.toString());
 
-      // Push decrypted file data to the result array
-      decryptedFiles.push({
-        fileName: encryptedFilePath,
-        data: decryptedFileData
-      });
-    }
+  // Push decrypted file data to the result array
+  decryptedFiles.push({
+    fileName: encryptedFilePath,
+    data: decryptedFileData
+  });
+}
 
     res.json(decryptedFiles);
   } catch (err) {
@@ -146,6 +151,7 @@ app.post('/decrypt', async (req, res) => {
     res.status(500).json({ msg: 'Server Error' });
   }
 });
+
 
 
 

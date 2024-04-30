@@ -5,27 +5,29 @@ import axios from 'axios'; // Import Axios
 import './FileUpload.css';
 
 const FileUpload = () => {
+  const location = useLocation();
   const [activeTab, setActiveTab] = useState('public');
   const [userName, setUserName] = useState('');
-  const [userEmail, setUserEmail] = useState('');
+  const [userEmail, setUserEmail] = useState(location.state.email);
   const [fileData, setFileData] = useState([]);
-  const location = useLocation();
+  
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (location.state && location.state.name) {
+    if (location.state.email && location.state.name) {
       setUserName(location.state.name);
-      setUserEmail(location.state.email);
-      getFileNames();
+      getFileNames()
     }
   }, [location]);
 
   const getFileNames = async () => {
     try {
-      const response = await axios.post('http://localhost:8000/decrypt', {
+      const response = await axios.post('http://localhost:8000/dec', {
         email: userEmail
       });
-      setFileData(response.data.fileNames);
+      console.log();
+      setFileData(response.data);
+      console.log(fileData);
     } catch (error) {
       console.error('Error retrieving file names:', error);
     }
@@ -92,46 +94,47 @@ const FileUpload = () => {
           <button className={`tab ${activeTab === 'public' ? 'active' : ''}`} onClick={() => handleTabChange('public')}>Public</button>
         </div>
         <div className="tab-content">
-          {activeTab === 'personal' && (
-            <table>
-              <thead>
-                <tr>
-                  <th>File Name</th>
-                  <th>Date</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {fileData.map((file, index) => (
-                  <tr key={index}>
-                    <td>{file.name}</td>
-                    <td>{file.date}</td>
-                    <td><FaDownload className="download-icon" /></td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
-          {activeTab === 'public' && (
-            <table>
-              <thead>
-                <tr>
-                  <th>File Name</th>
-                  <th>Uploaded By</th>
-                  <th>Date</th>
-                </tr>
-              </thead>
-              <tbody>
-              {fileData.map((file, index) => (
-                  <tr key={index}>
-                    <td>{file.name}</td>
-                    <td>{file.uploadedBy}</td>
-                    <td>{file.date}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          )}
+        {activeTab === 'personal' && (
+  <table>
+    <thead>
+      <tr>
+        <th>File Name</th>
+        <th>Date</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      {fileData && fileData.map((file, index) => (
+        <tr key={index}>
+          <td>{file.fileName}</td> {/* Use 'filename' instead of 'name' */}
+          <td>{file.date}</td>
+          <td><FaDownload className="download-icon" /></td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+)}
+
+{activeTab === 'public' && (
+  <table>
+    <thead>
+      <tr>
+        <th>File Name</th>
+        <th>Uploaded By</th>
+        <th>Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {fileData && fileData.map((file, index) => (
+        <tr key={index}>
+          <td>{file.fileName}</td> {/* Use 'filename' instead of 'name' */}
+          <td>{file.uploadedBy || userName}</td> {/* Use 'uploadedBy' or default to user's name */}
+          <td>{file.date}</td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+)}
         </div>
       </div>
     </div>

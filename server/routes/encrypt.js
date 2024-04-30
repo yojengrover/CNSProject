@@ -19,6 +19,8 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // POST route to receive file, encrypt it, and save encrypted data locally
+const crypto = require('crypto');
+
 router.post('/', upload.single('file'), async (req, res) => {
   const { email } = req.body;
    
@@ -33,17 +35,24 @@ router.post('/', upload.single('file'), async (req, res) => {
     const filePath = req.file.path;
     const fileData = fs.readFileSync(filePath);
 
+    // Generate a random symmetric key for encryption
+    const symmetricKey = crypto.randomBytes(32);
+
     // Encrypt file data using AES-256
-    const encryptedData = aes256.encrypt(user.password, fileData.toString());
+    const encryptedData = aes256.encrypt(symmetricKey.toString('base64'), fileData.toString());
 
     // Save the encrypted data to a file
     const encryptedFilePath = `files/${req.file.originalname}.enc`;
     fs.writeFileSync(encryptedFilePath, encryptedData);
 
+    // Save the symmetric key to a file
+    const encryptedKeyPath = `keys/${req.file.originalname}.key`;
+    fs.writeFileSync(encryptedKeyPath, symmetricKey);
+
     if (!user.files) {
         user.files = []; // Initialize as an empty array if undefined
       }
-      user.files.push(encryptedFilePath);
+    user.files.push({ file: encryptedFilePath, key: encryptedKeyPath });
       
     await user.save();
     // Delete the temporary uploaded file
@@ -55,6 +64,7 @@ router.post('/', upload.single('file'), async (req, res) => {
     res.status(500).json({ msg: 'Server Error' });
   }
 });
+
 
 
 
